@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     Game {{ game.first_player }} vs. {{ game.second_player }}
@@ -45,5 +45,18 @@
             {% endfor %}
         </table>
     </div>
+
+    {% if form %}
+        <div class="col-md-4">
+            <h3>It's your move</h3>
+            <form method="post"
+                  action="{% url 'gameplay_make_move' game.id %}">
+                {{ form | crispy }}
+                {% csrf_token %}
+
+                <button type="submit">Make move</button>
+            </form>
+        </div>
+    {% endif %}
 {% endblock %}
 
