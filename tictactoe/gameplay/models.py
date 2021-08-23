@@ -59,7 +59,24 @@ class Game(models.Model):
             by_first_player=self.status =='F'
         )
 
-    def get_absolute_url(self):
+    def update_after_move(self, move):
+        """Update the status of the game, given the last move"""
+        self.status = self._get_status_aftemove(move)
+
+    def _get_status_aftemove(self, move):
+        x, y = move.x, move.y
+        board = self.board()
+        if (board[y][0] == board[y][1] == board[y][2]) or \
+            (board[0][x] == board[1][x] == board[2][x]) or \
+            (board[0][0] == board[1][1] == board[2][2]) or \
+            (board[0][2] == board[1][1] == board[2][0]):
+            return "W" if move.by_first_player else "L"
+        if self.move_set.count() >= BOARD_SIZE**2:
+            return 'D'
+        return 'S' if self.status == 'F' else 'F'
+
+
+        def get_absolute_url(self):
         return reverse('gameplay_detail', args=[self.id])
 
     def __str__(self):
