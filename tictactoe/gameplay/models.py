@@ -77,7 +77,7 @@ class Game(models.Model):
 
 
         def get_absolute_url(self):
-        return reverse('gameplay_detail', args=[self.id])
+            return reverse('gameplay_detail', args=[self.id])
 
     def __str__(self):
         return "{0} vs {1}".format(self.first_player, self.second_player)
